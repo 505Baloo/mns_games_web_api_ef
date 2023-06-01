@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
+using MNSGamesWebAPI.Models.DTO;
 using static BCrypt.Net.BCrypt;
 
 namespace MNSGamesWebAPI.Controllers
@@ -23,13 +24,14 @@ namespace MNSGamesWebAPI.Controllers
 
         // GET: api/AppUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetAppUsers()
+        public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAppUsers()
         {
-          if (_context.AppUsers == null)
-          {
-              return NotFound();
-          }
-            return await _context.AppUsers.ToListAsync();
+            if (_context.AppUsers == null)
+            {
+                return NotFound();
+            }
+            var appUsers = await _context.AppUsers.ToListAsync();
+            return appUsers.Select(appUser => new AppUserDTO(appUser)).ToList();
         }
 
         // GET: api/AppUsers/5
