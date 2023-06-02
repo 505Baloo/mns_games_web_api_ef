@@ -25,7 +25,7 @@ namespace MNSGamesWebAPI.Controllers
                 return Problem("Entity set 'MNS_Games_DBContext.AppUsers' is null.");
             }
 
-            var temp = _context.AppUsers.Where(appUser => appUser.LoginNickname == loginAppUserDTO.LoginNickname || appUser.Email == loginAppUserDTO.Email).FirstOrDefault();
+            var temp = _context.AppUsers.Where(appUser => appUser.Email == loginAppUserDTO.Email).FirstOrDefault();
             AppUser appUserToReturn = null;
             
 
