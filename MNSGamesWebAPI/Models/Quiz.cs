@@ -14,7 +14,7 @@ namespace MNSGamesWebAPI.Models
         }
 
         public int Id { get; set; }
-        public string? QuizName { get; set; }
+        public string QuizName { get; set; }
         public TimeSpan? Duration { get; set; }
         public int ThemeId { get; set; }
         public int AppUserId { get; set; }

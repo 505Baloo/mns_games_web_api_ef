@@ -6,61 +6,60 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
-using MNSGamesWebAPI.Models.DTO;
 
 namespace MNSGamesWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuizsController : ControllerBase
+    public class ThemesController : ControllerBase
     {
         private readonly MNS_Games_DBContext _context;
 
-        public QuizsController(MNS_Games_DBContext context)
+        public ThemesController(MNS_Games_DBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Quizs
+        // GET: api/Themes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Quiz>>> GetQuizzes()
+        public async Task<ActionResult<IEnumerable<Theme>>> GetThemes()
         {
-          if (_context.Quizzes == null)
+          if (_context.Themes == null)
           {
               return NotFound();
           }
-            return await _context.Quizzes.ToListAsync();
+            return await _context.Themes.ToListAsync();
         }
 
-        // GET: api/Quizs/5
+        // GET: api/Themes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Quiz>> GetQuiz(int id)
+        public async Task<ActionResult<Theme>> GetTheme(int id)
         {
-          if (_context.Quizzes == null)
+          if (_context.Themes == null)
           {
               return NotFound();
           }
-            var quiz = await _context.Quizzes.FindAsync(id);
+            var theme = await _context.Themes.FindAsync(id);
 
-            if (quiz == null)
+            if (theme == null)
             {
                 return NotFound();
             }
 
-            return quiz;
+            return theme;
         }
 
-        // PUT: api/Quizs/5
+        // PUT: api/Themes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuiz(int id, Quiz quiz)
+        public async Task<IActionResult> PutTheme(int id, Theme theme)
         {
-            if (id != quiz.Id)
+            if (id != theme.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(quiz).State = EntityState.Modified;
+            _context.Entry(theme).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +67,7 @@ namespace MNSGamesWebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!QuizExists(id))
+                if (!ThemeExists(id))
                 {
                     return NotFound();
                 }
@@ -81,46 +80,44 @@ namespace MNSGamesWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Quizs
+        // POST: api/Themes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Quiz>> PostQuiz(QuizDTO quizDTO)
+        public async Task<ActionResult<Theme>> PostTheme(Theme theme)
         {
-          if (_context.Quizzes == null)
+          if (_context.Themes == null)
           {
-              return Problem("Entity set 'MNS_Games_DBContext.Quizzes'  is null.");
+              return Problem("Entity set 'MNS_Games_DBContext.Themes'  is null.");
           }
-
-            Quiz quizToAdd = quizDTO.ToQuiz();
-            _context.Quizzes.Add(quizToAdd);
+            _context.Themes.Add(theme);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuiz", new { id = quizToAdd.Id }, quizToAdd);
+            return CreatedAtAction("GetTheme", new { id = theme.Id }, theme);
         }
 
-        // DELETE: api/Quizs/5
+        // DELETE: api/Themes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQuiz(int id)
+        public async Task<IActionResult> DeleteTheme(int id)
         {
-            if (_context.Quizzes == null)
+            if (_context.Themes == null)
             {
                 return NotFound();
             }
-            var quiz = await _context.Quizzes.FindAsync(id);
-            if (quiz == null)
+            var theme = await _context.Themes.FindAsync(id);
+            if (theme == null)
             {
                 return NotFound();
             }
 
-            _context.Quizzes.Remove(quiz);
+            _context.Themes.Remove(theme);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool QuizExists(int id)
+        private bool ThemeExists(int id)
         {
-            return (_context.Quizzes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Themes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
