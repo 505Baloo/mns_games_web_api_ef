@@ -86,15 +86,15 @@ namespace MNSGamesWebAPI.Controllers
         // POST: api/AppUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AppUser>> PostAppUser(SignUpAppUserDTO signUpDTO)
+        public async Task<ActionResult<AppUser>> PostAppUser(SignUpAppUserDTO signUpDTO, CancellationToken cancelToken)
         {
             if (_context.AppUsers == null)
             {
                 return Problem("Entity set 'MNS_Games_DBContext.AppUsers' is null.");
             }
 
-            bool isLoginNicknameExisting = _context.AppUsers.Any(appUser => appUser.LoginNickname == signUpDTO.LoginNickname);
-            bool isEmailExisting = _context.AppUsers.Any(appUser => appUser.Email == signUpDTO.Email);
+            bool isLoginNicknameExisting = await _context.AppUsers.AnyAsync(appUser => appUser.LoginNickname == signUpDTO.LoginNickname, cancelToken);
+            bool isEmailExisting = await _context.AppUsers.AnyAsync(appUser => appUser.Email == signUpDTO.Email, cancelToken);
 
             if (isLoginNicknameExisting)
                 return BadRequest("Login is already taken!");
@@ -106,9 +106,9 @@ namespace MNSGamesWebAPI.Controllers
             signUpDTO.LoginPassword = hashedPassword;
 
             AppUser appUserToAdd = signUpDTO.ToAppUser();
-
+                      
             _context.AppUsers.Add(appUserToAdd);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancelToken);
 
             return CreatedAtAction("GetAppUser", new { id = appUserToAdd.Id }, appUserToAdd);
         }

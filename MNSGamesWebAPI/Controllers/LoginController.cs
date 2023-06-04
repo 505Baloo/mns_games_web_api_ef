@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
 using MNSGamesWebAPI.Models.DTO;
 using static BCrypt.Net.BCrypt;
@@ -18,28 +19,23 @@ namespace MNSGamesWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AppUser>> LogAppUser(LoginAppUserDTO loginAppUserDTO)
+        public async Task<ActionResult<AppUser>> LogAppUser(LoginAppUserDTO loginAppUserDTO, CancellationToken cancelToken)
         {
             if (_context.AppUsers == null)
             {
                 return Problem("Entity set 'MNS_Games_DBContext.AppUsers' is null.");
             }
 
-            var temp = _context.AppUsers.Where(appUser => appUser.Email == loginAppUserDTO.Email).FirstOrDefault();
-            AppUser appUserToReturn = null;
-            
+            var appUserToReturn = await _context.AppUsers.FirstOrDefaultAsync(appUser => appUser.Email == loginAppUserDTO.Email, cancelToken);
 
-            if (temp == null)
+            if (appUserToReturn == null)
                 return BadRequest("User not found!");
-            else
-            {
-                var tempPassword = temp.LoginPassword;
-                if(Verify(loginAppUserDTO.LoginPassword, tempPassword))
-                {
-                    appUserToReturn = temp;
-                }
-            }
 
+            var tempPassword = appUserToReturn.LoginPassword;
+            if(!Verify(loginAppUserDTO.LoginPassword, tempPassword))
+            {
+                return BadRequest("Password doesn't match!");
+            }
             return Ok(appUserToReturn);
         }
     }

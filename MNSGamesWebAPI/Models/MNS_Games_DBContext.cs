@@ -226,7 +226,7 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.Quizzes)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Quiz__AppUserID__2DE6D218");
 
                 entity.HasOne(d => d.Theme)
