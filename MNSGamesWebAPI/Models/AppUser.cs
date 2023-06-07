@@ -15,11 +15,11 @@ namespace MNSGamesWebAPI.Models
 
         public int Id { get; set; }
 
-        public string LoginNickname { get; set; } = null!;
+        public string LoginNickname { get; set; }
 
-        public string LoginPassword { get; set; } = null!;
+        public string LoginPassword { get; set; } 
 
-        public string Email { get; set; } = null!;
+        public string Email { get; set; } 
 
         public string? FirstName { get; set; }
 

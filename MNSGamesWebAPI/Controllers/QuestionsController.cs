@@ -29,11 +29,11 @@ namespace MNSGamesWebAPI.Controllers
             if (_context.Questions == null)
                 return NotFound();
 
-            var questions = _context.Questions.ToList();
+            var questions = await _context.Questions.ToListAsync();
 
             var questionsDTOs = questions.Select(question => new QuestionDTO
             {
-                Id= question.Id,
+                Id = question.Id,
                 LabelQuestion = question.LabelQuestion,
                 Duration = question.Duration,
                 QuizId = question.QuizId,

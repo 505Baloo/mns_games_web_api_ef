@@ -30,8 +30,10 @@ namespace MNSGamesWebAPI.Controllers
               return NotFound();
           }
             var quizzes = await _context.Quizzes.ToListAsync();
+
             var quizDTOs = quizzes.Select(q => new QuizDTO
             {
+                Id = q.Id,
                 QuizName = q.QuizName,
                 Duration = q.Duration,
                 ThemeId = q.ThemeId,
@@ -58,7 +60,7 @@ namespace MNSGamesWebAPI.Controllers
 
             var quizDTO = new QuizDTO
             {
-                Id= quiz.Id,
+                Id = quiz.Id,
                 QuizName = quiz.QuizName,
                 Duration = quiz.Duration,
                 ThemeId = quiz.ThemeId,
@@ -109,7 +111,15 @@ namespace MNSGamesWebAPI.Controllers
               return Problem("Entity set 'MNS_Games_DBContext.Quizzes'  is null.");
           }
 
+            var appUser = await _context.AppUsers.FindAsync(quizDTO.AppUserId);
+
+            var theme = await _context.Themes.FindAsync(quizDTO.ThemeId);
+
+            if (appUser == null || theme == null)
+                return NotFound();
+
             Quiz quizToAdd = quizDTO.ToQuiz();
+
             _context.Quizzes.Add(quizToAdd);
             await _context.SaveChangesAsync();
 

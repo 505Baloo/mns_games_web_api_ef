@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
+using MNSGamesWebAPI.Models.DTO;
 
 namespace MNSGamesWebAPI.Controllers
 {
@@ -22,18 +23,29 @@ namespace MNSGamesWebAPI.Controllers
 
         // GET: api/Answers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Answer>>> GetAnswers()
+        public async Task<ActionResult<IEnumerable<AnswerDTO>>> GetAnswers()
         {
           if (_context.Answers == null)
           {
               return NotFound();
           }
-            return await _context.Answers.ToListAsync();
+            var answers = await _context.Answers.ToListAsync();
+
+            var answersDTO = answers.Select(answer => new AnswerDTO
+            {
+                Id = answer.Id,
+                LabelAnswer = answer.LabelAnswer,
+                IsCorrect = answer.IsCorrect,
+                Points = answer.Points,
+                QuestionId = answer.QuestionId,
+            }).ToList();
+
+            return answersDTO;
         }
 
         // GET: api/Answers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Answer>> GetAnswer(int id)
+        public async Task<ActionResult<AnswerDTO>> GetAnswer(int id)
         {
           if (_context.Answers == null)
           {
@@ -46,7 +58,16 @@ namespace MNSGamesWebAPI.Controllers
                 return NotFound();
             }
 
-            return answer;
+            var answerDTO = new AnswerDTO
+            {
+                Id = answer.Id,
+                LabelAnswer = answer.LabelAnswer,
+                IsCorrect = answer.IsCorrect,
+                Points = answer.Points,
+                QuestionId = answer.QuestionId,
+            };
+
+            return answerDTO;
         }
 
         // PUT: api/Answers/5
@@ -83,16 +104,24 @@ namespace MNSGamesWebAPI.Controllers
         // POST: api/Answers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Answer>> PostAnswer(Answer answer)
+        public async Task<ActionResult<Answer>> PostAnswer(AnswerDTO answerDTO)
         {
           if (_context.Answers == null)
           {
               return Problem("Entity set 'MNS_Games_DBContext.Answers'  is null.");
           }
-            _context.Answers.Add(answer);
+
+            var question = await _context.Questions.FindAsync(answerDTO.QuestionId);
+
+            if (question == null)
+                return NotFound();
+
+            Answer answerToAdd = answerDTO.ToAnswer();
+
+            _context.Answers.Add(answerToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
+            return CreatedAtAction("GetAnswer", new { id = answerToAdd.Id }, answerToAdd);
         }
 
         // DELETE: api/Answers/5
