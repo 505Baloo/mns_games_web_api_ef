@@ -18,9 +18,10 @@ namespace MNSGamesWebAPI.Models
         public int QuizId { get; set; }
 
         public virtual Quiz Quiz { get; set; } = null!;
+        // Necessary?
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Obtain> Obtains { get; set; }
-
+        // Necessary?
         public virtual ICollection<Answer> AnswersNavigation { get; set; }
     }
 }

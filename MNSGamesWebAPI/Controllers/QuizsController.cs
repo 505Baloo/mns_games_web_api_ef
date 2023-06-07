@@ -23,18 +23,27 @@ namespace MNSGamesWebAPI.Controllers
 
         // GET: api/Quizs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Quiz>>> GetQuizzes()
+        public async Task<ActionResult<IEnumerable<QuizDTO>>> GetQuizzes()
         {
           if (_context.Quizzes == null)
           {
               return NotFound();
           }
-            return await _context.Quizzes.ToListAsync();
+            var quizzes = await _context.Quizzes.ToListAsync();
+            var quizDTOs = quizzes.Select(q => new QuizDTO
+            {
+                QuizName = q.QuizName,
+                Duration = q.Duration,
+                ThemeId = q.ThemeId,
+                AppUserId = q.AppUserId
+            }).ToList();
+
+        return quizDTOs;
         }
 
         // GET: api/Quizs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Quiz>> GetQuiz(int id)
+        public async Task<ActionResult<QuizDTO>> GetQuiz(int id)
         {
           if (_context.Quizzes == null)
           {
@@ -47,7 +56,16 @@ namespace MNSGamesWebAPI.Controllers
                 return NotFound();
             }
 
-            return quiz;
+            var quizDTO = new QuizDTO
+            {
+                Id= quiz.Id,
+                QuizName = quiz.QuizName,
+                Duration = quiz.Duration,
+                ThemeId = quiz.ThemeId,
+                AppUserId = quiz.AppUserId
+            };
+
+            return quizDTO;
         }
 
         // PUT: api/Quizs/5
