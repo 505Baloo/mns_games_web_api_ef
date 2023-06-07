@@ -12,7 +12,7 @@ namespace MNSGamesWebAPI.Models
         }
 
         public int Id { get; set; }
-        public string? LabelAnswer { get; set; }
+        public string LabelAnswer { get; set; }
         public bool IsCorrect { get; set; }
         public int? Points { get; set; }
         public int QuestionId { get; set; }

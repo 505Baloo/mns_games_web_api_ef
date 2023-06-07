@@ -8,8 +8,8 @@ namespace MNSGamesWebAPI.Models
         public int QuestionId { get; set; }
         public int AnswerId { get; set; }
         public int GameId { get; set; }
-        public DateTime? DatetimeQuestionDisplay { get; set; }
-        public DateTime? DatetimeAnswerDisplay { get; set; }
+        public DateTime DatetimeQuestionDisplay { get; set; }
+        public DateTime DatetimeAnswerDisplay { get; set; }
 
         public virtual Answer Answer { get; set; } = null!;
         public virtual Game Game { get; set; } = null!;
