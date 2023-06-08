@@ -110,7 +110,7 @@ namespace MNSGamesWebAPI.Controllers
           {
               return Problem("Entity set 'MNS_Games_DBContext.Answers'  is null.");
           }
-
+            // TODO: Verify LabelAnswer doesn't exist in DB, if it does, use that one instead and assign it to another question (many-to-many)
             var question = await _context.Questions.FindAsync(answerDTO.QuestionId);
 
             if (question == null)
@@ -119,6 +119,8 @@ namespace MNSGamesWebAPI.Controllers
             Answer answerToAdd = answerDTO.ToAnswer();
 
             _context.Answers.Add(answerToAdd);
+            // Test 
+            question.AnswersNavigation.Add(answerToAdd);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAnswer", new { id = answerToAdd.Id }, answerToAdd);

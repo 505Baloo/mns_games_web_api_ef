@@ -7,6 +7,7 @@
         public TimeSpan? Duration { get; set; }
         public int ThemeId { get; set; }
         public int AppUserId { get; set; }
+        public int[]? BadgeIds { get; set; }
 
         public QuizDTO() { }
 

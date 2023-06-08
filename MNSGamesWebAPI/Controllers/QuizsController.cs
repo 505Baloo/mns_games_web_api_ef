@@ -120,6 +120,15 @@ namespace MNSGamesWebAPI.Controllers
 
             Quiz quizToAdd = quizDTO.ToQuiz();
 
+            if(quizDTO.BadgeIds != null)
+            {
+                var badges = await _context.Badges.Where(badge => quizDTO.BadgeIds.Contains(badge.Id)).ToListAsync();
+                foreach (var badge in badges)
+                {
+                    quizToAdd.Badges.Add(badge);
+                }
+            }
+
             _context.Quizzes.Add(quizToAdd);
             await _context.SaveChangesAsync();
 
@@ -135,11 +144,13 @@ namespace MNSGamesWebAPI.Controllers
                 return NotFound();
             }
             var quiz = await _context.Quizzes.FindAsync(id);
+
             if (quiz == null)
             {
                 return NotFound();
             }
 
+            //_context.Questions.RemoveRange(quiz.Questions);
             _context.Quizzes.Remove(quiz);
             await _context.SaveChangesAsync();
 

@@ -137,7 +137,7 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.Games)
                     .HasForeignKey(d => d.QuizId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__Game__QuizID__367C1819");
             });
 
@@ -195,8 +195,8 @@ namespace MNSGamesWebAPI.Models
                     .WithMany(p => p.Questions)
                     .UsingEntity<Dictionary<string, object>>(
                         "Correspond",
-                        l => l.HasOne<Answer>().WithMany().HasForeignKey("AnswerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Correspon__Answe__3F115E1A"),
-                        r => r.HasOne<Question>().WithMany().HasForeignKey("QuestionId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Correspon__Quest__3E1D39E1"),
+                        l => l.HasOne<Answer>().WithMany().HasForeignKey("AnswerId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Correspon__Answe__3F115E1A"),
+                        r => r.HasOne<Question>().WithMany().HasForeignKey("QuestionId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Correspon__Quest__3E1D39E1"),
                         j =>
                         {
                             j.HasKey("QuestionId", "AnswerId").HasName("PK__Correspo__50884A8EEFD5AC3A");
