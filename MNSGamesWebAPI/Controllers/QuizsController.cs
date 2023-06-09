@@ -108,14 +108,17 @@ namespace MNSGamesWebAPI.Controllers
         {
           if (_context.Quizzes == null)
           {
-              return Problem("Entity set 'MNS_Games_DBContext.Quizzes'  is null.");
+              return Problem("Entity set 'MNS_Games_DBContext.Quizzes' is null.");
           }
 
             var appUser = await _context.AppUsers.FindAsync(quizDTO.AppUserId);
 
             var theme = await _context.Themes.FindAsync(quizDTO.ThemeId);
 
-            if (appUser == null || theme == null)
+            if (appUser == null)
+                return NotFound();
+
+            if (theme == null)
                 return NotFound();
 
             Quiz quizToAdd = quizDTO.ToQuiz();

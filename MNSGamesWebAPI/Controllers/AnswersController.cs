@@ -73,7 +73,7 @@ namespace MNSGamesWebAPI.Controllers
         // PUT: api/Answers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAnswer(int id, Answer answer)
+        public async Task<IActionResult> PutAnswer(int id, AnswerDTO answer)
         {
             if (id != answer.Id)
             {

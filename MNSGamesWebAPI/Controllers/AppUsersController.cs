@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace MNSGamesWebAPI.Controllers
 {
     [Route("api/AppUser")]
     [ApiController]
+    [Authorize]
     public class AppUsersController : ControllerBase
     {
         private readonly MNS_Games_DBContext _context;

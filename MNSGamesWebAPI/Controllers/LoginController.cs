@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
 using MNSGamesWebAPI.Models.DTO;
+using MNSGamesWebAPI.Services;
 using static BCrypt.Net.BCrypt;
 
 
@@ -12,14 +14,16 @@ namespace MNSGamesWebAPI.Controllers
     public class LoginController : ControllerBase
     {
         private readonly MNS_Games_DBContext _context;
+        private readonly TokenService _tokenService;
 
-        public LoginController(MNS_Games_DBContext context)
+        public LoginController(MNS_Games_DBContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
-        public async Task<ActionResult<AppUser>> LogAppUser(LoginAppUserDTO loginAppUserDTO, CancellationToken cancelToken)
+        public async Task<ActionResult<string>> LogAppUser(LoginAppUserDTO loginAppUserDTO, CancellationToken cancelToken)
         {
             if (_context.AppUsers == null)
             {
@@ -36,7 +40,11 @@ namespace MNSGamesWebAPI.Controllers
             {
                 return BadRequest("Password doesn't match!");
             }
-            return Ok(appUserToReturn);
+
+            // Remove this line if not working in front
+            string token = _tokenService.GenerateToken(appUserToReturn);
+            //return Ok(appUserToReturn);
+            return Ok(token);
         }
     }
 }
