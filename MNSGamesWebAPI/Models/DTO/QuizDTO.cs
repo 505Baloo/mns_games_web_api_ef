@@ -9,6 +9,7 @@
         public int AppUserId { get; set; }
         public int[]? BadgeIds { get; set; }
 
+
         public QuizDTO() { }
 
         public QuizDTO(Quiz quiz)

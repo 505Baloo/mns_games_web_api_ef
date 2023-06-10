@@ -123,7 +123,9 @@ namespace MNSGamesWebAPI.Controllers
             question.AnswersNavigation.Add(answerToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAnswer", new { id = answerToAdd.Id }, answerToAdd);
+            answerDTO.Id = answerToAdd.Id;
+
+            return Ok(answerDTO);
         }
 
         // DELETE: api/Answers/5

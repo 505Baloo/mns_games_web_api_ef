@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MNSGamesWebAPI.Models;
 using MNSGamesWebAPI.Models.DTO;
+using MNSGamesWebAPI.Services;
 
 namespace MNSGamesWebAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace MNSGamesWebAPI.Controllers
     public class QuizsController : ControllerBase
     {
         private readonly MNS_Games_DBContext _context;
+        private readonly CascadeDeleteService _cascadeDeleteService;
 
-        public QuizsController(MNS_Games_DBContext context)
+        public QuizsController(MNS_Games_DBContext context, CascadeDeleteService cascadeDeleteService)
         {
             _context = context;
+            _cascadeDeleteService = cascadeDeleteService;
         }
 
         // GET: api/Quizs
@@ -64,7 +67,7 @@ namespace MNSGamesWebAPI.Controllers
                 QuizName = quiz.QuizName,
                 Duration = quiz.Duration,
                 ThemeId = quiz.ThemeId,
-                AppUserId = quiz.AppUserId
+                AppUserId = quiz.AppUserId,
             };
 
             return quizDTO;
@@ -104,7 +107,7 @@ namespace MNSGamesWebAPI.Controllers
         // POST: api/Quizs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Quiz>> PostQuiz(QuizDTO quizDTO)
+        public async Task<ActionResult<QuizDTO>> PostQuiz(QuizDTO quizDTO)
         {
           if (_context.Quizzes == null)
           {
@@ -135,7 +138,9 @@ namespace MNSGamesWebAPI.Controllers
             _context.Quizzes.Add(quizToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuiz", new { id = quizToAdd.Id }, quizToAdd);
+            quizDTO.Id = quizToAdd.Id;
+
+            return Ok(quizDTO);
         }
 
         // DELETE: api/Quizs/5

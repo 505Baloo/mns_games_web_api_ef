@@ -102,7 +102,9 @@ namespace MNSGamesWebAPI.Controllers
             _context.Badges.Add(badgeToAdd);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBadge", new { id = badgeToAdd.Id }, badgeToAdd);
+            badgeDTO.Id = badgeToAdd.Id;
+
+            return Ok(badgeDTO);
         }
 
         // DELETE: api/Badges/5

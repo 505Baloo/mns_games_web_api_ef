@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MNSGamesWebAPI.Models
@@ -48,7 +49,7 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.QuestionId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Answer__Question__339FAB6E");
             });
 
@@ -131,13 +132,13 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.Games)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Game__AppUserID__37703C52");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.Games)
                     .HasForeignKey(d => d.QuizId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Game__QuizID__367C1819");
             });
 
@@ -157,19 +158,19 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.Answer)
                     .WithMany(p => p.Obtains)
                     .HasForeignKey(d => d.AnswerId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Obtain__AnswerID__46B27FE2");
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.Obtains)
                     .HasForeignKey(d => d.GameId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Obtain__GameID__47A6A41B");
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Obtains)
                     .HasForeignKey(d => d.QuestionId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Obtain__Question__45BE5BA9");
             });
 
@@ -188,15 +189,15 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.QuizId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Question__QuizID__30C33EC3");
 
                 entity.HasMany(d => d.AnswersNavigation)
                     .WithMany(p => p.Questions)
                     .UsingEntity<Dictionary<string, object>>(
                         "Correspond",
-                        l => l.HasOne<Answer>().WithMany().HasForeignKey("AnswerId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Correspon__Answe__3F115E1A"),
-                        r => r.HasOne<Question>().WithMany().HasForeignKey("QuestionId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Correspon__Quest__3E1D39E1"),
+                        l => l.HasOne<Answer>().WithMany().HasForeignKey("AnswerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Correspon__Answe__3F115E1A"),
+                        r => r.HasOne<Question>().WithMany().HasForeignKey("QuestionId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Correspon__Quest__3E1D39E1"),
                         j =>
                         {
                             j.HasKey("QuestionId", "AnswerId").HasName("PK__Correspo__50884A8EEFD5AC3A");
@@ -226,21 +227,21 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.Quizzes)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Quiz__AppUserID__2DE6D218");
 
                 entity.HasOne(d => d.Theme)
                     .WithMany(p => p.Quizzes)
                     .HasForeignKey(d => d.ThemeId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Quiz__ThemeID__2CF2ADDF");
 
                 entity.HasMany(d => d.Badges)
                     .WithMany(p => p.Quizzes)
                     .UsingEntity<Dictionary<string, object>>(
                         "Attribute",
-                        l => l.HasOne<Badge>().WithMany().HasForeignKey("BadgeId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Attribute__Badge__3B40CD36"),
-                        r => r.HasOne<Quiz>().WithMany().HasForeignKey("QuizId").OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK__Attribute__QuizI__3A4CA8FD"),
+                        l => l.HasOne<Badge>().WithMany().HasForeignKey("BadgeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Attribute__Badge__3B40CD36"),
+                        r => r.HasOne<Quiz>().WithMany().HasForeignKey("QuizId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Attribute__QuizI__3A4CA8FD"),
                         j =>
                         {
                             j.HasKey("QuizId", "BadgeId").HasName("PK__Attribut__5AD32C59DDC7188A");
@@ -267,13 +268,13 @@ namespace MNSGamesWebAPI.Models
                 entity.HasOne(d => d.AppUser)
                     .WithMany(p => p.Registrates)
                     .HasForeignKey(d => d.AppUserId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Registrat__AppUs__42E1EEFE");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.Registrates)
                     .HasForeignKey(d => d.QuizId)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Registrat__QuizI__41EDCAC5");
             });
 
