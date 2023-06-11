@@ -89,6 +89,10 @@ namespace MNSGamesWebAPI.Controllers
           {
               return Problem("Entity set 'MNS_Games_DBContext.Themes'  is null.");
           }
+            if(theme.Title == "")
+            {
+                return BadRequest();
+            }
             _context.Themes.Add(theme);
             await _context.SaveChangesAsync();
 
