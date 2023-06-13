@@ -2,7 +2,6 @@
 {
     public class LoginAppUserDTO
     {
-        public int Id { get; set; }
         public string Email { get; set; } 
         public string LoginPassword { get; set; } 
 
@@ -10,7 +9,6 @@
 
         public LoginAppUserDTO(AppUser appUser)
         {
-            Id = appUser.Id;
             LoginPassword = appUser.LoginPassword;
             Email = appUser.Email;
         }
@@ -19,7 +17,6 @@
         {
             return new AppUser
             {
-                Id = Id,
                 LoginPassword = LoginPassword,
                 Email = Email
             };

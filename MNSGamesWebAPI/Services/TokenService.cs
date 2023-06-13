@@ -31,7 +31,7 @@ namespace MNSGamesWebAPI.Services
                     _configuration["JWT:Issuer"],
                     _configuration["JWT:Audience"],
                     claims,
-                    expires: DateTime.UtcNow.AddDays(1),
+                    expires: DateTime.UtcNow.AddMinutes(60),
                     signingCredentials: signature
                 );
 

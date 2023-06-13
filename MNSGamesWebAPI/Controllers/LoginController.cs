@@ -41,9 +41,8 @@ namespace MNSGamesWebAPI.Controllers
                 return BadRequest("Password doesn't match!");
             }
 
-            // Remove this line if not working in front
             string token = _tokenService.GenerateToken(appUserToReturn);
-            //return Ok(appUserToReturn);
+
             return Ok(token);
         }
     }
